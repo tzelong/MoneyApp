@@ -1,0 +1,267 @@
+<!-- Anuflora Systems  -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="style.css" />
+ 
+    <title>NUS Money</title>
+  </head>
+  <body>
+    
+    <h2> NUS Money</h2>
+
+
+    <!-- I try to add a chart below  -->
+    <!--
+    <div class="container">
+      
+     <h4>Your Chart</h4>
+      <div id="bar-chart"></div>
+
+    
+      
+      </div> -->
+      
+     
+
+<!-- I try to add a chart above  -->
+
+
+    <div class="container">
+      <h4>Your Balance</h4>
+      <h1 id="balance">$0.00</h1>
+
+      <div class="inc-exp-container">
+        <div>
+          <h4>Deposit</h4>
+          <p id="deposit" class="money plus">+$0.00</p>
+        </div>
+        <div>
+          <h4>Loan</h4>
+          <p id="loan" class="money minus">-$0.00</p>
+        </div>
+      
+      </div>
+
+    
+      <h3>Details</h3>
+      <ul id="list" class="list">
+        <!-- <li class="minus">
+          Cash <span>-$400</span><button class="delete-btn">x</button>
+        </li> -->
+      </ul>
+
+        
+      <!-- Try to Insert drop downlist after h3 Customer Details h3 !!!!!!!!!!!!!!!!!  -->
+
+      <h3>Customer Details</h3>
+
+     Select customer name:
+      <select id="myList" onchange="testdropdownlistFunction()">
+        <option></option>
+        <option>Flora</option>
+        <option>Mikhil</option>  
+        <option>Sashil</option>
+        <option>Jack</option>
+      </select> 
+
+
+      <form id="form">
+        <div class="form-control">
+          <label for="custname">Customer Name</label>    
+          <input type="text" id="custname" placeholder="Enter customername..." />
+        </div>  
+
+
+
+      <!---- <p>Your selected customer is: <input type="text" id="custname" size="20"> </p> -->
+
+
+        <button class="btn">Submit</button>
+        <div class="form-control">
+          <p id="reco" class="blinking"></p>
+        </div>
+      </form>
+    
+<!-- I added the function below with (custname -- not demo) to activate the drop downlist function -->
+      <script> 
+      function testdropdownlistFunction() {
+        var mylist = document.getElementById("myList");
+        document.getElementById('custname').value = mylist.options[mylist.selectedIndex].text;
+        
+      }
+      </script>
+  
+    </div>
+
+
+    <script src="script.js"></script>
+
+          <!-- Try to add a chart below !!!!!!!!!!!!!!!!!  -->
+
+         <!-- <h4> Deposit (x100) in first row and Loan (x100) in second row </h4> -->
+
+        
+         <h2> Individual Deposit-Loan pie chart </h2>
+
+          <script src="https://d3js.org/d3.v5.min.js"></script>
+          
+          <!-- <script src="svgChart.js"></script>  -->
+          
+          <!-- <button onclick="myFunction()">click me</button> -->
+    
+          <!-- Try to add a chart above !!!!!!!!!!!!!!!!!  -->
+
+          
+<!-- Code from d3-graph-gallery.com -->
+
+<meta charset="utf-8">
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<!-- Color scale -->
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+
+<!-- Add 4 buttons -->
+<!-- <button onclick="update(data1)">Flora</button>
+<button onclick="update(data2)">Mikhil</button>
+<button onclick="update(data3)">Sashil</button>
+<button onclick="update(data4)">Jack</button> -->
+
+<div class="btn-group">
+  <button onclick="update(data1)">Flora</button>
+  <button onclick="update(data2)">Mikhil</button>
+  <button onclick="update(data3)">Sashil</button>
+  <button onclick="update(data4)">Jack</button>
+</div>
+
+
+
+<p>Select a person from the list.</p>
+
+<select id="mySelect" onchange="myFunction()">
+  <option value="Flora">Flora</option>
+  <option value="Mikhil">Mikhil</option>
+  <option value="Sashil">Sashil</option>
+  <option value="Jack">Jack</option>
+</select>
+
+<p>When you select a new person, a function is triggered which outputs the value of the selected person.</p>
+
+<p id="demo"></p>
+
+<script>
+function myFunction() {
+  var name = document.getElementById("mySelect").value;
+  document.getElementById("demo").innerHTML = "You selected: " + name;
+}
+</script>
+
+<!--
+<button class="button button3" onclick="update(data1)">Flora</button>
+<button class="button button3" onclick="update(data2)">Mikhil</button>
+<button class="button button3" onclick="update(data3)">Sashil</button>
+<button class="button button3" onclick="update(data4)">Jack</button> -->
+
+
+<!-- Create a div where the graph will take place -->
+
+
+<div id="my_dataviz"></div>
+
+
+<script>
+
+// set the dimensions and margins of the graph
+var width = 450
+    height = 450
+    margin = 40
+
+// The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
+var radius = Math.min(width, height) / 2 - margin
+
+// append the svg object to the div called 'my_dataviz'
+var svg = d3.select("#my_dataviz")
+  .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+// create 2 data_set
+// var data1 = {a: 9, b: 20, c:30, d:8, e:12}
+// var data2 = {a: 6, b: 16, c:20, d:14, e:19, f:12}
+//var data1 = {a: 7000, b: 4000, c:0, d:0, e:0}
+//var data2 = {a: 3000, b: 2000, c:0, d:0, e:0}
+
+
+
+// if (name=="Flora") {var data1 = {a: 7000, b: 4000}};
+// if (name=="Mikhil") {var data2 = {a: 3000, b: 2000}};
+// if (name=="Sashil") {var data3 = {a: 6000, b: 1000}};
+// if (name=="Jack") {var data3 = {a: 6000, b: 8000}};
+
+var data1 = {a: 7000, b: 4000}
+var data2 = {a: 3000, b: 2000}
+var data3 = {a: 6000, b: 1000}
+var data4 = {a: 6000, b: 8000}
+
+// set the color scale
+var color = d3.scaleOrdinal()
+  //.domain(["a", "b", "c", "d", "e", "f"])
+
+  .domain(["a", "b"])
+
+  .range(d3.schemeDark2);
+
+
+// A function that create / update the plot for a given variable:
+function update(data) { 
+
+  // Compute the position of each group on the pie:
+  var pie = d3.pie()
+    .value(function(d) {return d.value; })
+    .sort(function(a, b) { console.log(a) ; return d3.ascending(a.key, b.key);} ) // This make sure that group order remains the same in the pie chart
+  var data_ready = pie(d3.entries(data))
+
+  // map to data
+  var u = svg.selectAll("path")
+    .data(data_ready)
+
+  // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
+  u
+    .enter()
+    .append('path')
+    .merge(u)
+    .transition()
+    .duration(1000)
+    .attr('d', d3.arc()
+      .innerRadius(0)
+      .outerRadius(radius)
+    )
+    .attr('fill', function(d){ return(color(d.data.key)) })
+    .attr("stroke", "white")
+    .style("stroke-width", "2px")
+    .style("opacity", 1)
+
+  // remove the group that is not present anymore
+  u
+    .exit()
+    .remove()
+
+}
+
+// Initialize the plot with the first dataset
+update(data1)
+
+</script> 
+  
+</body>
+</html> 
